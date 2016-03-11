@@ -7,6 +7,7 @@ package jj.principal;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -14,6 +15,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import jj.bean.OpCurso;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -42,8 +44,10 @@ public class comun extends HttpServlet {
         String valor = request.getParameter("valor");
         if ("ENVIO_JSON".equals(accion)) {
             try {
+                ArrayList<OpCurso> listOpCurso = new ArrayList<OpCurso>();
                 JSONArray jSONArray = new JSONArray(valor);
-                
+                OpCurso opCurso = new OpCurso();
+
                 for (int i = 0; i < jSONArray.length(); i++) {
                     JSONObject jSONObject = jSONArray.getJSONObject(i);
                     String asignatura = jSONObject.get("asignatura").toString();
@@ -52,9 +56,21 @@ public class comun extends HttpServlet {
                     String dia = jSONObject.get("dia").toString();
                     String hora = jSONObject.get("hora").toString();
                     String aula = jSONObject.get("aula").toString();
+
+                    if (!asignatura.isEmpty()) {
+                        opCurso = new OpCurso();
+                        opCurso.setAsignatura(asignatura);
+                        opCurso.setAula(aula);
+                        opCurso.setProfesor(profesor);
+                        opCurso.setSeccion(seccion);
+                        listOpCurso.add(opCurso);
+                    }
+                    opCurso.addDiaHora(dia, hora);
+
                     
-                    
-                    
+                }
+                for (OpCurso op : listOpCurso) {
+                    System.out.println(op.getAsignatura());
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();

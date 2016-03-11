@@ -92,4 +92,15 @@ public class OpCurso {
     public void setList(ArrayList<DiaHora> list) {
         this.list = list;
     }
+    
+    public void addDiaHora(String dia, String hora)
+    {
+        DiaHora d = new DiaHora();
+        d.setDia(dia);
+        d.setHora(hora);
+        if(list == null)
+            list = new ArrayList<>();
+        
+        list.add(d);
+    }
 }
