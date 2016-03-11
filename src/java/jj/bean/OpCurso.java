@@ -6,13 +6,14 @@
 
 package jj.bean;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  *
  * @author Jaime Ambrosio
  */
-public class OpCurso {
+public class OpCurso implements Cloneable{
 
     public String getCodAsignatura() {
         return codAsignatura;

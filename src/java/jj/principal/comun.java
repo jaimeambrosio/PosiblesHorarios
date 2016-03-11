@@ -5,7 +5,13 @@
  */
 package jj.principal;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import javax.servlet.ServletException;
@@ -16,6 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.swing.JOptionPane;
 import jj.bean.OpCurso;
+import jj.bean.PosHorario;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -41,7 +48,7 @@ public class comun extends HttpServlet {
         String result = "{}";
         HttpSession session = request.getSession();
         String accion = request.getParameter("accion");
-        
+
         try {
             if ("ENVIO_JSON".equals(accion)) {
                 String valor = request.getParameter("valor");
@@ -85,23 +92,24 @@ public class comun extends HttpServlet {
                 }
                 result = jsonArray.toString();
                 //JOptionPane.showMessageDialog(null, Arrays.toString(listOpCurso.toArray()));
-            }else if ("CUR_SEL".equals(accion)) {
-                ArrayList<OpCurso> orig = (ArrayList<OpCurso>)session.getAttribute("listOpCurso");
+            } else if ("CUR_SEL".equals(accion)) {
+                ArrayList<OpCurso> orig = (ArrayList<OpCurso>) session.getAttribute("listOpCurso");
                 ArrayList<Object[]> listCursos = new ArrayList<Object[]>();
                 String valor = request.getParameter("cbAsig");
                 String[] valores = valor.split(";");
                 ArrayList<OpCurso> temp;
                 for (String v : valores) {
-                     temp= new ArrayList<OpCurso>();
+                    temp = new ArrayList<OpCurso>();
                     for (OpCurso object : orig) {
                         if (object.getCodAsignatura().equals(v)) {
                             temp.add(object);
-                        }                        
+                        }
                     }
                     listCursos.add(temp.toArray());
                 }
+                procesarCursos(listCursos);
                 int i = 0;
-                JOptionPane.showMessageDialog(null,i);
+                JOptionPane.showMessageDialog(null, i);
             }
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -160,5 +168,51 @@ public class comun extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+    private void procesarCursos(ArrayList<Object[]> listCursos) {
+        ArrayList<PosHorario> listPos = new ArrayList<>();
+        boolean isPrimerCurso = true;
+        for (Object[] opciones : listCursos) { //para cada curso
+
+            if (isPrimerCurso) {
+                PosHorario p = null;
+                for (Object ob : opciones) {
+                    p = new PosHorario();
+                    p.add((OpCurso) ob);
+                    listPos.add(p);
+                }
+            } else {
+
+                ArrayList<PosHorario> ori = listPos;
+                listPos = new ArrayList<>();
+                for (Object ob : opciones) {
+                    ArrayList<PosHorario> temp = getClon(ori);
+                    for (PosHorario posHorario : temp) {
+                        posHorario.add((OpCurso) ob);
+                    }
+                    listPos.addAll(temp);
+                }
+
+            }
+            isPrimerCurso = false;
+
+        }
+    }
+
+    public ArrayList<PosHorario> getClon(ArrayList<PosHorario> list) {
+        ArrayList<PosHorario> result = new ArrayList<>();
+        try {
+            JSONArray j = new JSONArray(list);
+            String sjson = j.toString();
+            JSONArray u  = new JSONArray(sjson);
+            
+            
+            for (PosHorario posHorario : list) {
+                result.add((PosHorario) posHorario.clone());
+            }
+        } catch (Exception e) {
+        }
+        return result;
+    }
 
 }

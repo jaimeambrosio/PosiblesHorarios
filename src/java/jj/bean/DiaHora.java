@@ -10,7 +10,7 @@ package jj.bean;
  *
  * @author Jaime Ambrosio
  */
-public class DiaHora {
+public class DiaHora implements Cloneable{
     private String dia; 
     private Integer[] hora;
 
