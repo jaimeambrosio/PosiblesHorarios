@@ -26,12 +26,12 @@ function getJson()
                         datos.hora = font.text().trim();
                     else if (j === 11)
                         datos.aula = font.text().trim();
-                   
+
                 }
-                 
+
                 ++j;
             });
-            console.log(datos);
+          //  console.log(datos);
             arreglo[++cont] = datos;
         }
         ++i;
@@ -41,5 +41,16 @@ function getJson()
 
 function sendData(arreglo)
 {
-    
+    var str = JSON.stringify(arreglo);
+    var datos = new Object();
+    datos.accion = "ENVIO_JSON";
+    datos.valor = str;
+    console.log(str);
+    $.ajax({
+        url: "comun",
+        data: datos,
+        success: function(data) {
+            
+        }
+    });
 }
