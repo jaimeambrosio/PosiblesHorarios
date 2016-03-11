@@ -15,7 +15,7 @@ public class DiaHora {
     private Integer[] hora;
 
      
-    public void setHora(String hora) {
+    public void setHora(String hora) { //"09:00-11:00"
         Integer[] value = new Integer[2];
         String[] p = hora.split("-");
         value[0]=Integer.valueOf(p[0].split(":")[0]);

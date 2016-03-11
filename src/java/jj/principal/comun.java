@@ -8,6 +8,7 @@ package jj.principal;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -15,7 +16,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import javax.swing.JOptionPane;
 import jj.bean.OpCurso;
+import org.apache.catalina.tribes.util.Arrays;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -39,7 +43,8 @@ public class comun extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-
+        String result = "{}";
+        HttpSession session = request.getSession();
         String accion = request.getParameter("accion");
         String valor = request.getParameter("valor");
         if ("ENVIO_JSON".equals(accion)) {
@@ -67,14 +72,38 @@ public class comun extends HttpServlet {
                     }
                     opCurso.addDiaHora(dia, hora);
 
-                    
                 }
-                for (OpCurso op : listOpCurso) {
-                    System.out.println(op.getAsignatura());
+                session.setAttribute("listOpCurso", listOpCurso);
+                JSONArray array = new JSONArray();
+
+                for (int i = 0; i < listOpCurso.size(); i++) {
+                    OpCurso op = listOpCurso.get(i);
+                    if (i < listOpCurso.size() - 1) {
+                        if (!op.getAsignatura().equals(listOpCurso.get(i + 1).getAsignatura())) {
+                            array.put(op);
+                        }
+                    }
                 }
+                result = array.toString();
+                escribirTextoSalida(response, result);
+
+                //JOptionPane.showMessageDialog(null, Arrays.toString(listOpCurso.toArray()));
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
+        }
+    }
+
+    public final void escribirTextoSalida(HttpServletResponse response, String texto) {
+
+        PrintWriter out = null;
+
+        try {
+            out = response.getWriter();
+            out.print(texto);
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
