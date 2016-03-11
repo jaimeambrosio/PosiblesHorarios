@@ -80,7 +80,8 @@ public class comun extends HttpServlet {
                     OpCurso op = listOpCurso.get(i);
                     if (i < listOpCurso.size() - 1) {
                         if (!op.getAsignatura().equals(listOpCurso.get(i + 1).getAsignatura())) {
-                            array.put(op);
+                            JSONObject jSONObject = new JSONObject(op);
+                            array.put(jSONObject);
                         }
                     }
                 }

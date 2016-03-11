@@ -11,7 +11,15 @@ and open the template in the editor.
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
-        <div><button onclick="javascript:getJson();"> Probar </button></div>
+        <div>
+            <button onclick="javascript:getJson();"> Probar </button>
+            <br><br>
+            <div id="divCursosSel" style="display: none">
+                
+                <button onclick="consultar();" >Consultar</button>
+            </div>
+        
+        </div>
         <div>
             <table id="tbTarjet" cellspacing="1" border="0" bgcolor="maroon" align="right">
                 <tbody>

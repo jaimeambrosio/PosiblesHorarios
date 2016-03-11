@@ -4,13 +4,13 @@ function getJson()
     var i = 0;
     var cont = -1;
     var arreglo = new Array();
-    $('#tbTarjet tr').each(function() {
+    $('#tbTarjet tr').each(function () {
         if (i > 1)
         {
             var celdas = $("td", this);
             var j = 0;
             var datos = new Object();
-            celdas.each(function() {
+            celdas.each(function () {
                 if (j > 1)
                 {
                     var font = $("font", this);
@@ -31,7 +31,7 @@ function getJson()
 
                 ++j;
             });
-          //  console.log(datos);
+            //  console.log(datos);
             arreglo[++cont] = datos;
         }
         ++i;
@@ -45,12 +45,19 @@ function sendData(arreglo)
     var datos = new Object();
     datos.accion = "ENVIO_JSON";
     datos.valor = str;
-    console.log(str);
+    // console.log(str);
     $.ajax({
         url: "comun",
         data: datos,
-        success: function(data) {
-            
+        success: function (data) {
+            var json = JSON.parse(data);
+            console.log(json);
+            for (var i = 0; i < json.length; ++i)
+            {
+                var inp = ' <input type="checkbox" name="" value="">' + json[i].asignatura + '<br>';
+                $("#divCursosSel").prepend(inp);
+            }
+            $("#divCursosSel").show('slow');
         }
     });
 }
