@@ -8,9 +8,6 @@ package jj.principal;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -19,9 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.swing.JOptionPane;
 import jj.bean.OpCurso;
-import org.apache.catalina.tribes.util.Arrays;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -46,15 +41,17 @@ public class comun extends HttpServlet {
         String result = "{}";
         HttpSession session = request.getSession();
         String accion = request.getParameter("accion");
-        String valor = request.getParameter("valor");
-        if ("ENVIO_JSON".equals(accion)) {
-            try {
+        
+        try {
+            if ("ENVIO_JSON".equals(accion)) {
+                String valor = request.getParameter("valor");
                 ArrayList<OpCurso> listOpCurso = new ArrayList<OpCurso>();
                 JSONArray jSONArray = new JSONArray(valor);
                 OpCurso opCurso = new OpCurso();
 
                 for (int i = 0; i < jSONArray.length(); i++) {
                     JSONObject jSONObject = jSONArray.getJSONObject(i);
+                    String codasignatura = jSONObject.get("codasignatura").toString();
                     String asignatura = jSONObject.get("asignatura").toString();
                     String seccion = jSONObject.get("seccion").toString();
                     String profesor = jSONObject.get("profesor").toString();
@@ -68,31 +65,34 @@ public class comun extends HttpServlet {
                         opCurso.setAula(aula);
                         opCurso.setProfesor(profesor);
                         opCurso.setSeccion(seccion);
+                        opCurso.setCodAsignatura(codasignatura);
                         listOpCurso.add(opCurso);
                     }
                     opCurso.addDiaHora(dia, hora);
 
                 }
                 session.setAttribute("listOpCurso", listOpCurso);
-                JSONArray array = new JSONArray();
+                JSONArray jsonArray = new JSONArray();
 
                 for (int i = 0; i < listOpCurso.size(); i++) {
                     OpCurso op = listOpCurso.get(i);
                     if (i < listOpCurso.size() - 1) {
                         if (!op.getAsignatura().equals(listOpCurso.get(i + 1).getAsignatura())) {
                             JSONObject jSONObject = new JSONObject(op);
-                            array.put(jSONObject);
+                            jsonArray.put(jSONObject);
                         }
                     }
                 }
-                result = array.toString();
-                escribirTextoSalida(response, result);
-
+                result = jsonArray.toString();
                 //JOptionPane.showMessageDialog(null, Arrays.toString(listOpCurso.toArray()));
-            } catch (Exception ex) {
-                ex.printStackTrace();
+            }else if ("CUR_SEL".equals(accion)) {
+                String valor = request.getParameter("cbAsig");
+                JOptionPane.showMessageDialog(null,valor);
             }
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
+        escribirTextoSalida(response, result);
     }
 
     public final void escribirTextoSalida(HttpServletResponse response, String texto) {

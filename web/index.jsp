@@ -15,8 +15,11 @@ and open the template in the editor.
             <button onclick="javascript:getJson();"> Probar </button>
             <br><br>
             <div id="divCursosSel" style="display: none">
-                
-                <button onclick="consultar();" >Consultar</button>
+                <div id="divCursosSelChe" >
+                    <input type="checkbox" name="cbAsig" id="" value=""><br>;
+
+                </div>
+                <button onclick="getPosHorarios();" >Consultar</button>
             </div>
         
         </div>

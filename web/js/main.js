@@ -11,7 +11,7 @@ function getJson()
             var j = 0;
             var datos = new Object();
             celdas.each(function () {
-                if (j > 1)
+                if (j > 0)
                 {
                     var font = $("font", this);
                     if (j === 2)
@@ -26,6 +26,8 @@ function getJson()
                         datos.hora = font.text().trim();
                     else if (j === 11)
                         datos.aula = font.text().trim();
+                    else if (j === 1)
+                        datos.codasignatura = font.text().trim();
 
                 }
 
@@ -48,16 +50,39 @@ function sendData(arreglo)
     // console.log(str);
     $.ajax({
         url: "comun",
+        method: "post",
         data: datos,
         success: function (data) {
             var json = JSON.parse(data);
             console.log(json);
+            $("#divCursosSelChe").empty();
             for (var i = 0; i < json.length; ++i)
             {
-                var inp = ' <input type="checkbox" name="" value="">' + json[i].asignatura + '<br>';
-                $("#divCursosSel").prepend(inp);
+                //<input type="checkbox" name="uno" id="uno"> <label for="uno">Texto</label><br />
+                var inp = ' <input type="checkbox" name="cbAsig" id="' + json[i].codAsignatura + '" value="' + json[i].codAsignatura + '"><label for="' + json[i].codAsignatura + '">' + json[i].asignatura + '</label><br>';
+                $("#divCursosSelChe").prepend(inp);
             }
             $("#divCursosSel").show('slow');
+        }
+    });
+}
+function getPosHorarios()
+{
+    var datos = new Object();
+    datos.accion = "CUR_SEL";
+   
+    var s = "";
+    $("input[name=cbAsig]:checked").each(function () {
+        s += $(this).val() + ";";
+    });
+     datos.cbAsig = s;
+    console.log(datos);
+    $.ajax({
+        url: "comun",
+        method: "post",
+        data: datos,
+        success: function (data) {
+
         }
     });
 }

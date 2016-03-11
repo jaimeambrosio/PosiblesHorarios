@@ -13,7 +13,16 @@ import java.util.ArrayList;
  * @author Jaime Ambrosio
  */
 public class OpCurso {
+
+    public String getCodAsignatura() {
+        return codAsignatura;
+    }
+
+    public void setCodAsignatura(String codAsignatura) {
+        this.codAsignatura = codAsignatura;
+    }
     
+    private String codAsignatura;
     private String asignatura;
     private String aula;
     private String profesor;
