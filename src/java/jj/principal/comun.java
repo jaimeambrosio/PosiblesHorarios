@@ -86,8 +86,22 @@ public class comun extends HttpServlet {
                 result = jsonArray.toString();
                 //JOptionPane.showMessageDialog(null, Arrays.toString(listOpCurso.toArray()));
             }else if ("CUR_SEL".equals(accion)) {
+                ArrayList<OpCurso> orig = (ArrayList<OpCurso>)session.getAttribute("listOpCurso");
+                ArrayList<Object[]> listCursos = new ArrayList<Object[]>();
                 String valor = request.getParameter("cbAsig");
-                JOptionPane.showMessageDialog(null,valor);
+                String[] valores = valor.split(";");
+                ArrayList<OpCurso> temp;
+                for (String v : valores) {
+                     temp= new ArrayList<OpCurso>();
+                    for (OpCurso object : orig) {
+                        if (object.getCodAsignatura().equals(v)) {
+                            temp.add(object);
+                        }                        
+                    }
+                    listCursos.add(temp.toArray());
+                }
+                int i = 0;
+                JOptionPane.showMessageDialog(null,i);
             }
         } catch (Exception ex) {
             ex.printStackTrace();
