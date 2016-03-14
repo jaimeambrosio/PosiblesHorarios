@@ -34,6 +34,8 @@ public class OpCurso {
     private String profesor;
     private String seccion;
     private ArrayList<DiaHora> list ;
+    
+   
 
     /**
      * @return the asignatura

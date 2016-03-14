@@ -96,7 +96,7 @@ public class comun extends HttpServlet {
                 ArrayList<OpCurso> orig = (ArrayList<OpCurso>) session.getAttribute("listOpCurso");
                 ArrayList<Object[]> listCursos = new ArrayList<Object[]>();
                 String[] valores = request.getParameterValues("cbAsig");
-               // String[] valores = valor.split(";");
+                // String[] valores = valor.split(";");
                 ArrayList<OpCurso> temp;
                 for (String v : valores) {
                     temp = new ArrayList<OpCurso>();
@@ -107,10 +107,10 @@ public class comun extends HttpServlet {
                     }
                     listCursos.add(temp.toArray());
                 }
-                PosHorario[] arrPosHorarios = procesarCursos(listCursos);
+                PosHorario[] arrPosHorarios = procesarCursos2(listCursos);
                 XLSXExportPosHorarios exportPosHorarios = new XLSXExportPosHorarios(arrPosHorarios);
                 XSSFWorkbook workbook = exportPosHorarios.execute();
-                exportExcel( response, workbook);
+                exportExcel(response, workbook);
 
             }
         } catch (Exception ex) {
@@ -180,6 +180,31 @@ public class comun extends HttpServlet {
         return arrPosHorarios;
     }
 
+    private PosHorario[] procesarCursos2(ArrayList<Object[]> listCursos) {
+        PosHorario[] arrPosHorarios = null;
+        Integer cantHorarios = getCantidadHorarios(listCursos);
+        if (cantHorarios > 0) {
+            arrPosHorarios = new PosHorario[cantHorarios];
+            for (int i = 0; i < arrPosHorarios.length; i++) {
+                arrPosHorarios[i] = new PosHorario();
+            }
+            int cantAnterior = 1;
+            for (Object[] objs : listCursos) {
+                int cont = -1;
+                while (cont < cantHorarios - 1) {
+                    for (Object obj : objs) {
+                        for (int i = 0; i < cantAnterior; i++) {
+                            arrPosHorarios[++cont].add((OpCurso) obj);
+                        }
+                    }
+                }
+
+                cantAnterior *= objs.length;
+            }
+        }
+        return arrPosHorarios;
+    }
+
     private Integer getCantidadHorarios(ArrayList<Object[]> listCursos) {
         Integer result = 1;
         for (Object[] obs : listCursos) {
@@ -202,10 +227,10 @@ public class comun extends HttpServlet {
     }
 
     private void exportExcel(HttpServletResponse response, XSSFWorkbook workbook) {
-        
+
         response.setContentType("application/vnd.ms-excel");
         response.setHeader("Content-Disposition", "attachment; filename=Horarios.xlsx");
-        
+
         try {
             ServletOutputStream outputStream = response.getOutputStream();
             workbook.write(outputStream); // Write workbook to response.
