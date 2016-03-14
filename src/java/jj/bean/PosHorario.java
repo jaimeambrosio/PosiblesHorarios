@@ -12,7 +12,7 @@ import java.util.ArrayList;
  *
  * @author hypervuser
  */
-public class PosHorario implements Cloneable{
+public class PosHorario {
 
     ArrayList<OpCurso> listOpCurso ;
     
@@ -33,9 +33,5 @@ public class PosHorario implements Cloneable{
         this.listOpCurso = listOpCurso;
     }
     
-    
-    public Object clone() throws CloneNotSupportedException {
-        return super.clone();
-    }
     
 }

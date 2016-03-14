@@ -82,7 +82,7 @@ function getPosHorarios()
         method: "post",
         data: datos,
         success: function (data) {
-
+               window.open(data);
         }
     });
 }

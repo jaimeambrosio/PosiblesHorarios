@@ -14,14 +14,18 @@ and open the template in the editor.
         <div>
             <button onclick="javascript:getJson();"> Probar </button>
             <br><br>
-            <div id="divCursosSel" style="display: none">
-                <div id="divCursosSelChe" >
-                    <input type="checkbox" name="cbAsig" id="" value=""><br>;
 
-                </div>
-                <button onclick="getPosHorarios();" >Consultar</button>
+            <div id="divCursosSel" style="display: none">
+                <form action="comun" method="POST"  >
+                    <div id="divCursosSelChe" >
+                        <input type="checkbox" name="cbAsig" id="" value=""><br>;
+
+                    </div>
+                    <input type="hidden" value="CUR_SEL" name="accion" >
+                    <button  type="submit">Consultar</button>
+                </form>
             </div>
-        
+
         </div>
         <div>
             <table id="tbTarjet" cellspacing="1" border="0" bgcolor="maroon" align="right">
@@ -1384,7 +1388,7 @@ and open the template in the editor.
                 </tbody>
             </table>
         </div>
-        <script type="text/javascript" src="js/jquery.min.js"> </script>
-        <script type="text/javascript" src="js/main.js"> </script>
+        <script type="text/javascript" src="js/jquery.min.js"></script>
+        <script type="text/javascript" src="js/main.js"></script>
     </body>
 </html>

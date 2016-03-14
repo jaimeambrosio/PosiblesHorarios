@@ -13,7 +13,12 @@ import java.util.ArrayList;
  *
  * @author Jaime Ambrosio
  */
-public class OpCurso implements Cloneable{
+public class OpCurso {
+    
+    public String getDesc()
+    { 
+        return asignatura + "\n" +aula + "\n" +profesor + "\n" +seccion + "\n";  
+    }
 
     public String getCodAsignatura() {
         return codAsignatura;
