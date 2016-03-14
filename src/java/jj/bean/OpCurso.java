@@ -26,6 +26,7 @@ public class OpCurso {
 
     public void setCodAsignatura(String codAsignatura) {
         this.codAsignatura = codAsignatura;
+        
     }
     
     private String codAsignatura;
