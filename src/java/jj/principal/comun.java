@@ -108,9 +108,11 @@ public class comun extends HttpServlet {
                     listCursos.add(temp.toArray());
                 }
                 PosHorario[] arrPosHorarios = procesarCursos2(listCursos);
-                XLSXExportPosHorarios exportPosHorarios = new XLSXExportPosHorarios(arrPosHorarios);
-                XSSFWorkbook workbook = exportPosHorarios.execute();
-                exportExcel(response, workbook);
+                if (arrPosHorarios != null) {
+                    XLSXExportPosHorarios exportPosHorarios = new XLSXExportPosHorarios(arrPosHorarios);
+                    XSSFWorkbook workbook = exportPosHorarios.execute();
+                    exportExcel(response, workbook);
+                }
 
             }
         } catch (Exception ex) {
