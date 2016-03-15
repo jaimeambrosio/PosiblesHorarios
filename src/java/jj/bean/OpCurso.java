@@ -26,6 +26,7 @@ public class OpCurso {
 
     public void setCodAsignatura(String codAsignatura) {
         this.codAsignatura = codAsignatura;
+        
     }
     
     private String codAsignatura;
@@ -34,6 +35,8 @@ public class OpCurso {
     private String profesor;
     private String seccion;
     private ArrayList<DiaHora> list ;
+    
+   
 
     /**
      * @return the asignatura

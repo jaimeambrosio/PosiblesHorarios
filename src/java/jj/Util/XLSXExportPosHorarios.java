@@ -122,11 +122,15 @@ public class XLSXExportPosHorarios {
                         }
                         XSSFClientAnchor anchor = new XSSFClientAnchor(0, 0, 0, 0, 0, 5, 10, 15);
                         Comment comentario = celda.getCellComment();
+                        String sCome = "";
                         if (comentario == null) {
                             comentario = hojaPrincipal.createDrawingPatriarch().createCellComment(anchor);
+                        }else
+                        {
+                             sCome = comentario.getString().getString() + "\n\n";
                         }
 
-                        RichTextString richTextString = workbook.getCreationHelper().createRichTextString(opCurso.getDesc());
+                        RichTextString richTextString = workbook.getCreationHelper().createRichTextString(sCome +opCurso.getDesc());
                         comentario.setString(richTextString);
                         celda.setCellValue(val + " - " + opCurso.getCodAsignatura());
                         celda.setCellComment(comentario);
