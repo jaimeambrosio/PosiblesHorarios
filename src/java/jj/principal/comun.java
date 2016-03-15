@@ -7,9 +7,9 @@ package jj.principal;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
+import java.util.Date;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.WebServlet;
@@ -17,7 +17,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.swing.JOptionPane;
 import jj.Util.XLSXExportPosHorarios;
 import jj.bean.OpCurso;
 import jj.bean.PosHorario;
@@ -230,8 +229,10 @@ public class comun extends HttpServlet {
 
     private void exportExcel(HttpServletResponse response, XSSFWorkbook workbook) {
 
+        SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss a");
+        String nombre = "Horarios " + formateador.format(new Date()) + ".xlsx";
         response.setContentType("application/vnd.ms-excel");
-        response.setHeader("Content-Disposition", "attachment; filename=Horarios.xlsx");
+        response.setHeader("Content-Disposition", "attachment; filename="+nombre);
 
         try {
             ServletOutputStream outputStream = response.getOutputStream();
