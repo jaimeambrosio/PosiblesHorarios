@@ -106,6 +106,10 @@ public class XLSXExportPosHorarios {
             ++fila;
             dibujarHorarioVacio(fila);
             ArrayList<OpCurso> lstOpCurso = arrPosHorarios[i].getListOpCurso();
+            if (i == 0) {
+                escribirCursosSeleccionados(lstOpCurso, fila);
+            }
+
             for (OpCurso opCurso : lstOpCurso) {
                 ArrayList<DiaHora> listDiaHora = opCurso.getList();
                 for (DiaHora diaHora : listDiaHora) {
@@ -125,12 +129,11 @@ public class XLSXExportPosHorarios {
                         String sCome = "";
                         if (comentario == null) {
                             comentario = hojaPrincipal.createDrawingPatriarch().createCellComment(anchor);
-                        }else
-                        {
-                             sCome = comentario.getString().getString() + "\n\n";
+                        } else {
+                            sCome = comentario.getString().getString() + "\n\n";
                         }
 
-                        RichTextString richTextString = workbook.getCreationHelper().createRichTextString(sCome +opCurso.getDesc());
+                        RichTextString richTextString = workbook.getCreationHelper().createRichTextString(sCome + opCurso.getDesc());
                         comentario.setString(richTextString);
                         celda.setCellValue(val + " - " + opCurso.getCodAsignatura());
                         celda.setCellComment(comentario);
@@ -173,6 +176,26 @@ public class XLSXExportPosHorarios {
 
         }
 
+    }
+
+    private void escribirCursosSeleccionados(ArrayList<OpCurso> lstOpCurso, Integer fila) {
+        Integer col = 12;
+        Row filaExcel = hojaPrincipal.getRow(fila);
+        Cell celdaTitulo = filaExcel.createCell(col);
+        celdaTitulo.setCellValue("Cursos seleccionados: ");
+        celdaTitulo.setCellStyle(stCabecera);
+
+        for (OpCurso op : lstOpCurso) {
+            ++fila;
+            filaExcel = hojaPrincipal.getRow(fila);
+            if (filaExcel == null) {
+                filaExcel = hojaPrincipal.createRow(fila);
+            }
+            Cell celda = filaExcel.createCell(col);
+            celda.setCellValue(op.getAsignatura() + " - COD: " + op.getCodAsignatura());
+
+        }
+        hojaPrincipal.autoSizeColumn(col);
     }
 
 }

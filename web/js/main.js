@@ -59,8 +59,8 @@ function sendData(arreglo)
             for (var i = 0; i < json.length; ++i)
             {
                 //<input type="checkbox" name="uno" id="uno"> <label for="uno">Texto</label><br />
-                var inp = ' <input type="checkbox" name="cbAsig" id="' + json[i].codAsignatura + '" value="' + json[i].codAsignatura + '"><label for="' + json[i].codAsignatura + '">' + json[i].asignatura + '</label><br>';
-                $("#divCursosSelChe").prepend(inp);
+                var inp = ' <input type="checkbox" name="cbAsig" id="' + json[i].codAsignatura + '" value="' + json[i].codAsignatura + '"><label for="' + json[i].codAsignatura + '">' + json[i].asignatura + ' - ' + json[i].codAsignatura + '</label><br>';
+                $("#divCursosSelChe").append(inp);
             }
             $("#divCursosSel").show('slow');
         }
@@ -70,19 +70,19 @@ function getPosHorarios()
 {
     var datos = new Object();
     datos.accion = "CUR_SEL";
-   
+
     var s = "";
     $("input[name=cbAsig]:checked").each(function () {
         s += $(this).val() + ";";
     });
-     datos.cbAsig = s;
+    datos.cbAsig = s;
     console.log(datos);
     $.ajax({
         url: "comun",
         method: "post",
         data: datos,
         success: function (data) {
-               window.open(data);
+            window.open(data);
         }
     });
 }

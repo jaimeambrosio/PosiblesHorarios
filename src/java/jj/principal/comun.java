@@ -83,11 +83,13 @@ public class comun extends HttpServlet {
 
                 for (int i = 0; i < listOpCurso.size(); i++) {
                     OpCurso op = listOpCurso.get(i);
-                    if (i < listOpCurso.size() - 1) {
-                        if (!op.getAsignatura().equals(listOpCurso.get(i + 1).getAsignatura())) {
-                            JSONObject jSONObject = new JSONObject(op);
-                            jsonArray.put(jSONObject);
-                        }
+                    if (i == 0) {
+                        JSONObject jSONObject = new JSONObject(op);
+                        jsonArray.put(jSONObject);
+                    } else 
+                        if (!op.getCodAsignatura().equals(listOpCurso.get(i - 1).getCodAsignatura())) {
+                        JSONObject jSONObject = new JSONObject(op);
+                        jsonArray.put(jSONObject);
                     }
                 }
                 result = jsonArray.toString();

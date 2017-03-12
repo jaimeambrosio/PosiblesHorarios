@@ -17,7 +17,7 @@ public class OpCurso {
     
     public String getDesc()
     { 
-        return asignatura + "\n" +aula + "\n" +profesor + "\n" +seccion + "\n";  
+        return asignatura+ " - COD:"+codAsignatura + "\n" +aula + "\n" +profesor + "\n" +seccion + "\n";  
     }
 
     public String getCodAsignatura() {
